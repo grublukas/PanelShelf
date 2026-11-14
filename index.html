@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PanelShelf – Deine Manhua-Bibliothek</title>
+<style>
+:root{--bg:#101019;--panel:#191927;--panel2:#202033;--text:#f4f1ff;--muted:#aaa6bd;--line:#302d45;--accent:#b69cff;--accent2:#8c70e8;--green:#8ce0bd;--red:#ff9aab}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#25203c 0,#101019 48%);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 15px;background:var(--accent);color:#171322;font-weight:700}button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}button.danger{background:#4a2634;color:#ffdbe2}
+.wrap{max-width:1150px;margin:auto;padding:28px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#d0baff,#8060db);display:grid;place-items:center;color:#171322;font-size:22px;font-weight:900}.brand h1{font-size:21px;margin:0}.brand p{margin:0;color:var(--muted);font-size:12px}.top-actions{display:flex;gap:9px;align-items:center}.userline{color:var(--muted);font-size:13px}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:25px 0}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.hero h2{font-size:clamp(28px,5vw,42px);line-height:1.08;margin:7px 0}.hero p{color:var(--muted);margin:0}.stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:#191927cc;border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-width:92px}.stat b{display:block;font-size:21px}.stat span{color:var(--muted);font-size:11px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.toolbar input{flex:1;min-width:200px}.field{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 13px;color:var(--text);outline:none}.field:focus{border-color:var(--accent)}select.field{min-width:150px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:15px}.card{background:linear-gradient(155deg,#201e31,#171723);border:1px solid var(--line);border-radius:17px;overflow:hidden;display:flex;flex-direction:column;min-height:280px}.cover{height:122px;background:linear-gradient(135deg,#45366b,#202038);display:flex;align-items:center;justify-content:center;color:#d9ccff;font-size:34px;font-weight:900;overflow:hidden}.cover img{width:100%;height:100%;object-fit:cover}.cardbody{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}.titleline{display:flex;justify-content:space-between;gap:8px}.titleline h3{margin:0;font-size:16px}.heart{background:transparent;color:#f1a5c0;padding:0;font-size:20px}.meta{color:var(--muted);font-size:12px}.progress{height:6px;border-radius:9px;background:#302d45;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#a58aff,#83d8c1)}.actions{display:flex;gap:8px;margin-top:auto;padding-top:5px}.actions button{flex:1;padding:9px 8px;font-size:13px}.empty{grid-column:1/-1;text-align:center;padding:55px 20px;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+.overlay{position:fixed;inset:0;background:#080810c9;display:none;align-items:center;justify-content:center;padding:18px;z-index:5}.overlay.show{display:flex}.modal{width:min(540px,100%);background:#1b1a29;border:1px solid var(--line);border-radius:20px;padding:22px;max-height:92vh;overflow:auto}.modal h2{margin:0 0 15px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.formgrid label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:12px}.formgrid .wide{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.notice{background:#24203a;border:1px solid #4b3e70;padding:12px 14px;border-radius:12px;color:#d9ceff;font-size:13px;margin:14px 0}.hidden{display:none!important}.auth{max-width:430px;margin:8vh auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:26px}.auth h2{margin:0 0 5px}.auth p{color:var(--muted);margin-top:0}.auth label{display:block;color:var(--muted);font-size:13px;margin:13px 0 5px}.auth input{width:100%}.auth button{width:100%;margin-top:13px}.auth .secondary{margin-top:8px}.error{color:var(--red);font-size:13px;min-height:20px}
+@media(max-width:650px){.wrap{padding:18px 14px 45px}.top{align-items:flex-start}.top-actions{flex-direction:column;align-items:flex-end}.hero{display:block}.stats{margin-top:16px}.formgrid{grid-template-columns:1fr}.formgrid .wide{grid-column:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="auth" class="auth">
+    <div class="brand"><div class="logo">P</div><div><h1>PanelShelf</h1><p>Deine persönliche Manhua-Bibliothek</p></div></div>
+    <h2 id="authTitle" style="margin-top:25px">Willkommen zurück</h2>
+    <p>Melde dich mit deiner E-Mail-Adresse an.</p>
+    <label for="email">E-Mail</label><input class="field" id="email" type="email" autocomplete="email" placeholder="du@beispiel.de">
+    <label for="password">Passwort</label><input class="field" id="password" type="password" autocomplete="current-password" placeholder="Mindestens 6 Zeichen">
+    <button id="signIn">Anmelden</button><button id="signUp" class="secondary">Konto erstellen</button>
+    <div id="authError" class="error"></div>
+    <div class="notice">Deine Bibliothek wird über dein persönliches Konto synchronisiert. Beim ersten Registrieren kann Supabase dir eine Bestätigungs-E-Mail senden.</div>
+  </section>
+
+  <main id="app" class="hidden">
+    <header class="top">
+      <div class="brand"><div class="logo">P</div><div><h1>PanelShelf</h1><p>Deine persönliche Manhua-Bibliothek</p></div></div>
+      <div class="top-actions"><span id="userLine" class="userline"></span><button class="secondary" id="logout">Abmelden</button></div>
+    </header>
+    <section class="hero">
+      <div><div class="eyebrow">Dein Leseregal</div><h2>Zurück in deine Story.</h2><p>Alle Reihen an einem Ort. Ein Tipp und du liest weiter.</p></div>
+      <div class="stats"><div class="stat"><b id="totalCount">0</b><span>GESAMT</span></div><div class="stat"><b id="readingCount">0</b><span>LESE ICH</span></div><div class="stat"><b id="doneCount">0</b><span>BEENDET</span></div><div class="stat"><b id="updatesCount">0</b><span>NEUE KAPITEL</span></div></div>
+    </section>
+    <div class="toolbar"><input id="search" class="field" placeholder="Titel suchen …"><select id="filter" class="field"><option value="all">Alle Status</option><option value="New Updates">✦ New Updates</option><option value="Reading">Reading</option><option value="Waiting for Updates">Waiting for Updates</option><option value="Plan to Read">Plan to Read</option><option value="On Hold">On Hold</option><option value="Completed">Completed</option><option value="Dropped">Dropped</option></select><button id="add">＋ Manhua hinzufügen</button></div>
+    <div id="cards" class="grid"></div>
+  </main>
+</div>
+
+<div id="editor" class="overlay"><div class="modal">
+  <h2 id="editorTitle">Manhua hinzufügen</h2>
+  <form id="entryForm"><input type="hidden" id="entryId">
+    <div class="formgrid">
+      <label class="wide">Titel *<input class="field" id="title" required maxlength="120" placeholder="z. B. The Beginning After the End"></label>
+      <label class="wide">Weiterlesen-Link *<input class="field" id="url" type="url" required placeholder="https://…"></label>
+      <div class="wide" style="display:grid;gap:7px"><button type="button" class="secondary" id="importInfo">✦ Infos aus Link erkennen</button><small id="importMessage" class="meta">Füge zuerst einen Leselink ein. PanelShelf versucht Titel, Cover und Kapitel zu erkennen.</small></div>
+      <label>Aktuelles Kapitel<input class="field" id="chapter" maxlength="40" placeholder="z. B. 128"></label>
+      <label>Status<select class="field" id="status"><option>Reading</option><option>Waiting for Updates</option><option>Plan to Read</option><option>On Hold</option><option>Completed</option><option>Dropped</option></select></label>
+      <label class="wide">Cover-Bild-URL (optional)<input class="field" id="cover" type="url" placeholder="https://…"></label>
+      <label class="wide" style="display:flex;align-items:center;gap:9px"><input id="newUpdate" type="checkbox" style="width:auto"> Neues Kapitel verfügbar</label>
+      <label class="wide">Notiz (optional)<textarea class="field" id="notes" rows="2" placeholder="z. B. Bei Kapitel 128 weiterlesen"></textarea></label>
+    </div>
+    <div class="modal-actions"><button type="button" class="secondary" id="cancel">Abbrechen</button><button type="submit">Speichern</button></div>
+  </form>
+</div></div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+// 1) In Supabase ein Projekt anlegen.
+// 2) Project Settings → API: URL und anon/publishable key hier eintragen.
+// Der anon key darf im Browser stehen, wenn Row Level Security (SQL-Datei) aktiv ist.
+const SUPABASE_URL = 'https://pquvanqowmlumdnllnbh.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_v32vujrEUYZ4_VHQJwmmvA_nblxrv2G';
+const configured = !SUPABASE_URL.startsWith('DEINE_') && !SUPABASE_ANON_KEY.startsWith('DEIN_');
+const authEl=document.querySelector('#auth'), app=document.querySelector('#app');
+const authError=document.querySelector('#authError');
+let supabase=null, user=null, entries=[];
+
+if(configured){
+  supabase=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+  document.querySelector('#signIn').onclick=()=>authAction('signIn');
+  document.querySelector('#signUp').onclick=()=>authAction('signUp');
+  document.querySelector('#logout').onclick=async()=>{await supabase.auth.signOut();};
+  supabase.auth.onAuthStateChange((_event,session)=>{user=session?.user||null;showState();if(user)loadEntries();});
+  const {data:{session}}=await supabase.auth.getSession(); user=session?.user||null; showState(); if(user)loadEntries();
+}else{
+  authError.textContent='Einmalige Einrichtung nötig: Trage zuerst deine Supabase-URL und deinen anon/publishable Key im Code ein. Die Anleitung liegt in README.md.';
+  document.querySelector('#signIn').disabled=true;document.querySelector('#signUp').disabled=true;
+}
+async function authAction(kind){
+  authError.textContent='';
+  const email=document.querySelector('#email').value.trim(),password=document.querySelector('#password').value;
+  if(!email||password.length<6){authError.textContent='Bitte E-Mail und ein Passwort mit mindestens 6 Zeichen eingeben.';return;}
+  const result=kind==='signUp'?await supabase.auth.signUp({email,password}):await supabase.auth.signInWithPassword({email,password});
+  if(result.error)authError.textContent=result.error.message;
+  else if(kind==='signUp'&&!result.data.session)authError.textContent='Konto erstellt. Bitte bestätige deine E-Mail und melde dich danach an.';
+}
+function showState(){authEl.classList.toggle('hidden',!!user);app.classList.toggle('hidden',!user);if(user)document.querySelector('#userLine').textContent=user.email||'';}
+async function loadEntries(){
+  const {data,error}=await supabase.from('manhua_entries').select('*').order('updated_at',{ascending:false});
+  if(error){alert('Laden fehlgeschlagen: '+error.message);return;} entries=data||[];render();
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function render(){
+  const q=document.querySelector('#search').value.toLowerCase(),f=document.querySelector('#filter').value;
+  const shown=entries.filter(x=>(x.title||'').toLowerCase().includes(q)&&(f==='all'||(f==='New Updates'?x.new_update===true:x.status===f)));
+  document.querySelector('#totalCount').textContent=entries.length;
+  document.querySelector('#readingCount').textContent=entries.filter(x=>x.status==='Reading').length;
+  document.querySelector('#doneCount').textContent=entries.filter(x=>x.status==='Completed').length;
+  document.querySelector('#updatesCount').textContent=entries.filter(x=>x.new_update===true).length;
+  const cards=document.querySelector('#cards');
+  if(!shown.length){cards.innerHTML='<div class="empty">Noch keine passenden Manhuas.<br>Füge deine erste Reihe hinzu und sammle sie hier.</div>';return;}
+  cards.innerHTML=shown.map(x=>`<article class="card">
+    <div class="cover">${x.cover_url?`<img src="${esc(x.cover_url)}" alt="" onerror="this.remove()">`:'✦'}</div>
+    <div class="cardbody"><div class="titleline"><h3>${esc(x.title)}</h3><button class="heart" title="Favorit" data-fav="${x.id}">${x.favorite?'♥':'♡'}</button></div>
+    <div class="meta">${esc(x.status)} · Kapitel ${esc(x.chapter||'–')}</div>
+    ${x.new_update?'<div class="notice" style="margin:8px 0">✦ Neues Kapitel verfügbar</div>':''}
+    ${x.notes?`<div class="meta">${esc(x.notes)}</div>`:''}
+    <div class="progress"><i style="width:${x.status==='Completed'?100:x.chapter?35:5}%"></i></div>
+    <div class="actions"><button data-open="${x.id}">Weiterlesen ↗</button><button class="secondary" data-edit="${x.id}">Bearbeiten</button>${x.new_update?`<button class="secondary" data-clear-update="${x.id}">Als gelesen markieren</button>`:''}</div>
+    </div></article>`).join('');
+  cards.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{const x=entries.find(e=>e.id===b.dataset.open);if(x?.url)window.open(x.url,'_blank','noopener,noreferrer');});
+  cards.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>editEntry(entries.find(e=>e.id===b.dataset.edit)));
+  cards.querySelectorAll('[data-fav]').forEach(b=>b.onclick=async()=>{const x=entries.find(e=>e.id===b.dataset.fav);await save({...x,favorite:!x.favorite});});
+  cards.querySelectorAll('[data-clear-update]').forEach(b=>b.onclick=async()=>{const x=entries.find(e=>e.id===b.dataset.clearUpdate);await save({...x,new_update:false});});
+}
+document.querySelector('#search').oninput=render;document.querySelector('#filter').onchange=render;
+const overlay=document.querySelector('#editor');
+function openEditor(){overlay.classList.add('show');}
+function closeEditor(){overlay.classList.remove('show');}
+document.querySelector('#importInfo').onclick=async()=>{
+  const link=document.querySelector('#url').value.trim();
+  const msg=document.querySelector('#importMessage');
+  if(!link){msg.textContent='Bitte füge zuerst einen Leselink ein.';return;}
+  let parsed;try{parsed=new URL(link);if(!['http:','https:'].includes(parsed.protocol))throw new Error();}catch{msg.textContent='Bitte gib einen gültigen http- oder https-Link ein.';return;}
+  const btn=document.querySelector('#importInfo');btn.disabled=true;btn.textContent='⏳ Suche Informationen …';msg.textContent='Die Seite wird untersucht. Das kann einige Sekunden dauern.';
+  try{
+    const response=await fetch('/.netlify/functions/import-metadata',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:link})});
+    const result=await response.json();
+    if(!response.ok)throw new Error(result.error||'Import fehlgeschlagen.');
+    if(result.title)document.querySelector('#title').value=result.title;
+    if(result.cover_url)document.querySelector('#cover').value=result.cover_url;
+    if(result.chapter)document.querySelector('#chapter').value=result.chapter;
+    const found=[result.title?'Titel':'',result.cover_url?'Cover':'',result.chapter?'Kapitel':''].filter(Boolean);
+    msg.textContent=found.length?'Erkannt: '+found.join(', ')+'. Bitte kontrolliere die Angaben vor dem Speichern.':'Die Website hat keine auslesbaren Angaben geliefert. Bitte ergänze sie manuell.';
+  }catch(err){msg.textContent='Automatisches Auslesen gerade nicht möglich: '+err.message+' Du kannst die Angaben weiterhin manuell eintragen.';}
+  finally{btn.disabled=false;btn.textContent='✦ Infos aus Link erkennen';}
+};
+document.querySelector('#add').onclick=()=>editEntry(null);
+document.querySelector('#cancel').onclick=closeEditor;
+function editEntry(x){
+  document.querySelector('#editorTitle').textContent=x?'Manhua bearbeiten':'Manhua hinzufügen';
+  document.querySelector('#entryId').value=x?.id||'';
+  document.querySelector('#title').value=x?.title||'';document.querySelector('#url').value=x?.url||'';
+  document.querySelector('#chapter').value=x?.chapter||'';document.querySelector('#status').value=x?.status||'Reading';
+  document.querySelector('#cover').value=x?.cover_url||'';document.querySelector('#notes').value=x?.notes||'';document.querySelector('#newUpdate').checked=x?.new_update===true;
+  openEditor();
+}
+async function save(row){
+  const payload={title:row.title,url:row.url,chapter:row.chapter,status:row.status,cover_url:row.cover_url,notes:row.notes,favorite:row.favorite,new_update:row.new_update===true,updated_at:new Date().toISOString()};
+  const query=row.id?supabase.from('manhua_entries').update(payload).eq('id',row.id):supabase.from('manhua_entries').insert({...payload,user_id:user.id});
+  const {error}=await query;if(error){alert('Speichern fehlgeschlagen: '+error.message);return;}await loadEntries();
+}
+document.querySelector('#entryForm').onsubmit=async e=>{
+  e.preventDefault();const id=document.querySelector('#entryId').value;
+  const old=entries.find(x=>x.id===id);
+  await save({id,title:document.querySelector('#title').value.trim(),url:document.querySelector('#url').value.trim(),chapter:document.querySelector('#chapter').value.trim(),status:document.querySelector('#status').value,cover_url:document.querySelector('#cover').value.trim(),notes:document.querySelector('#notes').value.trim(),favorite:old?.favorite||false,new_update:document.querySelector('#newUpdate').checked});
+  closeEditor();
+};
+</script>
+</body>
+</html>
